@@ -60,8 +60,52 @@ public class Board {
                 }
             }
         }
+        //
+        //Verifica as colunas
+        for (int i = 0; i < jogador.length; i++) {
+            for (int coluna = 0; coluna < 3; coluna++) {
+                int count = 0;
+                for (int linha = 0; linha < 3; linha++) {
+                    if (this.getTabuleiro()[linha][coluna] == jogador[i].getSimbolo()) {
+                        count++;
+                    }
+                }
+                if(count==3) {
+                    System.out.println(jogador[i].getNome() + " VENCEU A PARTIDA!");
+                    return true;
+                }
+            }
+        }
 
-        //TODO: VERIFICAR COLUNAS E DIAGONAIS
+        //DIAGONAL PRINCIPAL
+        for (int i = 0; i < jogador.length; i++){
+            //diagonal principal
+            int count = 0;
+            for (int indice = 0; indice < 3; indice++) {
+                if (this.getTabuleiro()[indice][indice] == jogador[i].getSimbolo()) {
+                    count++;
+                }
+            }
+            if(count==3) {
+                System.out.println(jogador[i].getNome() + " VENCEU A PARTIDA!");
+                return true;
+            }
+        }
+
+        //DIAGONAL SECUNDÁRIA
+        for (int i = 0; i < jogador.length; i++){
+            //diagonal principal
+            int count = 0;
+            for (int indice = 0; indice < 3; indice++) {
+                if (this.getTabuleiro()[2-indice][indice] == jogador[i].getSimbolo()) {
+                    count++;
+                }
+            }
+            if(count==3) {
+                System.out.println(jogador[i].getNome() + " VENCEU A PARTIDA!");
+                return true;
+            }
+        }
 
         return false;
     }
