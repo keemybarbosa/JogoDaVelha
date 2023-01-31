@@ -121,4 +121,17 @@ public class Board {
     public Jogador getJogadorAtual() {
         return this.jogador[this.getJogadaAtual() % 2];
     }
+
+    public GameEvent getEvent() {
+        GameEvent e = new GameEvent();
+        if (this.verificaGanhador()) {
+            e.setMessage("Jogo encerrado");
+            e.setEventType(GameEvent.GameEventType.GAME_FINISH);
+        } else if (this.getJogadaAtual() == 9){
+            e.setMessage("AHHHH O JOGO DEU VELHA! EMPATE!!!!");
+            e.setEventType(GameEvent.GameEventType.GAME_FINISH);
+        }
+        return e;
+
+    }
 }

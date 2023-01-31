@@ -7,52 +7,32 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner sc;
+        Scanner sc = new Scanner(System.in);
 
         Board board;
 
         do {
             try {
 
-                Inicialize();
+                ImprimirTopo();
 
-                sc = new Scanner(System.in);
-                System.out.println("Informe o nome do JOGADOR1:");
-                String jogador1 = sc.nextLine();
-                System.out.println("Informe o nome do JOGADOR2:");
-                String jogador2 = sc.nextLine();
-
-                board = new Board(new Jogador(jogador1), new Jogador(jogador2));
+                board = getBoard(sc);
 
                 board.show();
 
-                int posicao = 0;
+                do{
+                    jogar(sc, board);
 
-                while ((board.getJogadaAtual() <= 9) && !board.verificaGanhador()) {
-
-                    if (board.getJogadaAtual() > 8) {
-                        System.out.println("AHHHH O JOGO DEU VELHA! EMPATE!!!!");
+                    GameEvent e = board.getEvent();
+                    if (e.getEventType() == GameEvent.GameEventType.GAME_FINISH){
+                        System.out.println(e.getMessage());
                         break;
                     }
-
-                    System.out.printf("MOVIMENTO %d: %s ESCOLHA UM NÚMERO correspondente a sua jogada:", board.getJogadaAtual()+1, board.getJogadorAtual().getNome());
-                    posicao = sc.nextInt();
-                    board.Jogar (posicao);
-
-                    if (board.verificaGanhador()) {
-                        System.out.println("Jogo encerrado");
-                        break;
-                    }
-
-                    while (posicao < 1 || posicao > 9) {
-                        System.out.println("Você não escreveu um numero, escreva um número no tabuleiro:");
-                        posicao = sc.nextInt();
-                        board.Jogar(posicao);
-                    }
-                }
+                } while (true);
 
             } catch (Exception e) {
-                System.out.println("Você não digitou um argumento válido\n:( VAMOS ENCERRAR O JOGO :(.");
+                System.out.println("Você não digitou um argumento válido\n" +
+                        ":( VAMOS ENCERRAR O JOGO :(.");
                 System.exit(0);
             }
 
@@ -60,6 +40,31 @@ public class Main {
         } while (ContinuarJogo());
 
 
+    }
+
+    private static Board getBoard(Scanner sc) {
+        System.out.println("Informe o nome do JOGADOR1:");
+        String jogador1 = sc.nextLine();
+        System.out.println("Informe o nome do JOGADOR2:");
+        String jogador2 = sc.nextLine();
+
+        return new Board(new Jogador(jogador1), new Jogador(jogador2));
+    }
+
+    private static void jogar(Scanner sc, Board board) {
+        int posicao;
+        boolean repetirJogada = false;
+        do {
+            System.out.printf("MOVIMENTO %d: %s ESCOLHA UM NÚMERO correspondente a sua jogada:", board.getJogadaAtual() + 1, board.getJogadorAtual().getNome());
+            posicao = sc.nextInt();
+            if(posicao < 1 || posicao > 9) {
+                System.out.println("Você não escreveu um numero, escreva um número no tabuleiro:");
+                repetirJogada = true;
+            }
+            else {
+                board.Jogar(posicao);
+            }
+        } while (repetirJogada);
     }
 
     private static boolean ContinuarJogo() {
@@ -73,7 +78,7 @@ public class Main {
         return true;
     }
 
-    public static void Inicialize() {
+    public static void ImprimirTopo() {
         System.out.println("__________________________________________________\n" +
                 "|                OKUBARO´S GAMES                 |\n" +
                 "|                 JOGO DA VELHA                  |\n" +
