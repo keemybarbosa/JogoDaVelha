@@ -7,6 +7,7 @@ public class Board {
             {'7', '8', '9'}};
     Jogador[] jogador = new Jogador[2];
     int jogadaAtual;
+    boolean finish;
 
     public Board(Jogador jogador1, Jogador jogador2) {
         this.jogadaAtual = 0;
@@ -14,6 +15,8 @@ public class Board {
         this.jogador[0].setSimbolo('X');
         this.jogador[1] = jogador2;
         this.jogador[1].setSimbolo('0');
+
+        this.finish = false;
     }
 
     public char[][] getTabuleiro() {
@@ -41,6 +44,17 @@ public class Board {
 
         this.show();
 
+    }
+
+    public char getValue(int posicao){
+        int linha = Double.valueOf(Math.floor((posicao-1)/3)).intValue();
+        int coluna = Double.valueOf(Math.floor((posicao-1)%3)).intValue();
+        return this.getTabuleiro() [linha][coluna];
+    }
+
+    public boolean isEmpty(int posicao){
+        return (this.getValue(posicao) != this.jogador[0].getSimbolo()) &&
+                (this.getValue(posicao) != this.jogador[1].getSimbolo());
     }
 
     public boolean verificaGanhador() {
@@ -120,6 +134,14 @@ public class Board {
 
     public Jogador getJogadorAtual() {
         return this.jogador[this.getJogadaAtual() % 2];
+    }
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
     }
 
     public GameEvent getEvent() {
